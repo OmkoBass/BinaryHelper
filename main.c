@@ -2,70 +2,86 @@
 #include <stdlib.h>
 #include <math.h>
 
-int* toBinary(int n)
+void toBinary()
 {
     int i;
     int *tempArray = malloc(sizeof(int) * 8);
     int num;
 
     printf("Enter a number you want to convert to binary: ");
+
+    scanf("%d", &num);
+
+    if(num < 0 || num > 255)
+    {
+        printf("Not in the range of 8 bits. \n");
+        return;
+    }
+
+    printf("We divide out number with the number 2. The remainder is either 0 or 1.\n");
+    printf("We need that remainder to know if the bit is 1 or 0.\nWhen we look at the the sequence of bits we are looking backwards.\n");
+    printf("That's why the for loop is going backwards.\n");
+
+    for(i = 7; i > -1; i--)
+    {
+        *(tempArray + i) = num % 2;
+        num = num / 2;
+        printf("%d / 2 = %d\n", num, *(tempArray + i));
+    }
+
+    printBinaryArray(tempArray);
+
+    return;
+}
+
+void toDecimal()
+{
+    int i;
+    int decimal = 0;
+    int *binary = binaryNumber();
+
+    printf("The power of 2 is the key here. Each bit has it's exponent.\nFor example: the 0th bit has the exponent of 0.\n");
+    printf("The 1st bit has the exponent of 1.\nSo that means that we should just add their exponents.\n");
+    printf("The maximum number is 255 because of that. If we add all of the two's exponents we will get 255.\n");
+
+    for(i = 0; i < 8; i++)
+    {
+        if(*(binary + i) != 0)
+        {
+            printf("%d + %d(2 to the power of %d)", decimal, pow(2, (float)i), i);
+            decimal += pow(2, (float)i);
+        }
+    }
+
+    printf("The number we got is %d.\n", decimal);
+    return;
+}
+
+int *binaryNumber()
+{
+    int i = 0;
+    int j = 7;
+    int *tempArray = malloc(sizeof(int) * 8);
     do
     {
-        scanf("%d", &num);
-        for(i = 7; i > -1; i--)
-        {
-            *(tempArray + i) = n % 2;
-            n = n / 2;
-        }    
-    } while (num < 256 || num > -1);
-    
-    return tempArray;
-}
+        printf("Enter the %d bit", ++j);
+        scanf("%d", (&tempArray + i));
+        i++; j--;
+    } while (i < 8);
 
-int* logicOR(int *first, int *second)
-{
-    if(first && second)
-    {
-        int *newArray = malloc(sizeof(int) * 8);
-        for(int i = 0; i < 8; i++)
-        {
-            *(newArray + i) = *(first+i) & *(second+i);
-        }
-        return newArray;
-    }
-    else
-        return NULL;
-}
-
-int toDecimal(int *array)
-{
-    if(array)
-    {
-        int i;
-        int decimal = 0;
-        for(i = 0; i < 8; i++)
-        {
-            if(*(array + i) != 0)
-            {
-                decimal += pow(2, (float)i);
-            }
-        }
-
-        return decimal;
-    }
-    else
-        return -1;
+    return tempArray;   
 }
 
 void printBinaryArray(int *array)
 {
     if(array)
     {
+        printf("\n");
         for(int i = 0; i < 8; i++)
         {
             printf("%d", *(array + i));
         }
-        printf("\n");    
+        printf("\n\n");    
     }
     else
         printf("NULL\n");
@@ -91,8 +107,10 @@ void choose(int n)
     switch(n)
     {
         case 1:
+            toBinary();
             break;
         case 2:
+            toDecimal();
             break;
         case 3:
             break;
