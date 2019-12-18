@@ -1,49 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#define SIZE 8
 
-void toBinary();
-void toDecimal();
-int *binaryNumber();
-void NOT();
-void OR();
-void AND();
-void NOR();
-void NAND();
-void printBinaryArray(int *array);
 void printMainScreen();
 void choose(int n);
+void toBinary();
+void toDecimal();
+int *NOT();
+int *OR();
+int *binaryNumber();
+void printBinary(int *array);
 
 void toBinary()
 {
     int i;
-    int *tempArray = malloc(sizeof(int) * 8);
     int num;
+    int *binary = malloc(sizeof(int) * SIZE);
 
-    printf("Enter a number you want to convert to binary: ");
+    char help = '^';
 
+    printf("-----------------------------------------------------------------------------------\n");
+    printf("We divide the entered number by two and the remainder of it is the bit that counts.\n");
+    printf("We then write the bits backwads.\n");
+    printf("-----------------------------------------------------------------------------------\n");
+
+    printf("Enter a number from 0 to 255: ");
     scanf("%d", &num);
 
-    if(num < 0 || num > 255)
+    if(num > -1 && num < 256)
     {
-        printf("Not in the range of 8 bits. \n");
-        return;
+        for(i = SIZE-1; i >= 0; i--)
+        {
+            printf("%d : 2 = %d %c\n", num, num % 2, help);
+            binary[i] = num % 2;
+            num = num / 2;
+            help = '|';
+        }
     }
 
-    printf("We divide out number with the number 2. The remainder is either 0 or 1.\n");
-    printf("We need that remainder to know if the bit is 1 or 0.\nWhen we look at the the sequence of bits we are looking backwards.\n");
-    printf("That's why the for loop is going backwards.\n");
-
-    for(i = 7; i > -1; i--)
-    {
-        *(tempArray + i) = num % 2;
-        num = num / 2;
-        printf("%d / 2 = %d\n", num, *(tempArray + i));
-    }
-
-    printBinaryArray(tempArray);
-
-    return;
+    printf("The number is: "); printBinary(binary);
 }
 
 void toDecimal()
@@ -52,158 +48,100 @@ void toDecimal()
     int decimal = 0;
     int *binary = binaryNumber();
 
-    printf("The power of 2 is the key here. Each bit has it's exponent.\nFor example: the 0th bit has the exponent of 0.\n");
-    printf("The 1st bit has the exponent of 1.\nSo that means that we should just add their exponents.\n");
-    printf("The maximum number is 255 because of that. If we add all of the two's exponents we will get 255.\n");
-
-    for(i = 0; i < 8; i++)
-    {
-        if(*(binary + i) != 0)
-        {
-            printf("%d + %d(2 to the power of %d)", decimal, pow(2, (float)i), i);
-            decimal += pow(2, (float)i);
-        }
-    }
-
-    printf("The number we got is %d.\n", decimal);
-    return;
-}
-
-void NOT()
-{
-    int i;
-    int *array = binaryNumber();
-
-    printf("NOT logic gate works like this.\nIt invers the bits. If it's 1 it will be 0 and inverse.\n");
-
-    for(i = 0; i < 8; i++)
-    {
-        *(array + i) = (*(array + i) + 1) % 2;
-    }
-
-    printBinaryArray(array);
-}
-
-void OR()
-{
-    int i;
-    int *first = binaryNumber();
-    int *second = binaryNumber();
+    if(!binary)
+        return;
+    printf("------------------------------------------------------\n");
+    printf("The two's exponent is key here.\nFirst(zero) digit is the power of zero.\n");
+    printf("The second(one) digit is the power of one and so on.\n");
+    printf("We add all of these numbers and get our decimal number.\n");
+    printf("------------------------------------------------------\n");
     
-    int *output = malloc(sizeof(int) * 8);
-    printf("OR Logic gate works like this.\nOne of the two compared bits needs to be 1 so that the output can be 1.\n");
-
-    for(i = 0; i < 8; i++)
+    for(int i = 0; i < SIZE; i++)
     {
-        *(output + i) = *(first + i) | *(second + i);
+        if(binary[i] == 1)
+            decimal += pow(2, i);
     }
 
-    printBinaryArray(output);
-}
-
-void AND()
-{
-    int i;
-    int *first = binaryNumber();
-    int *second = binaryNumber();
-    
-    int *output = malloc(sizeof(int) * 8);
-    printf("AND Logic gate works like this.\nTwo bits need to be 1 so that the output can be 1.\n");
-
-    for(i = 0; i < 8; i++)
-    {
-        *(output + i) = *(first + i) & *(second + i);
-    }
-
-    printBinaryArray(output);
-}
-
-void NOR()
-{
-    int i;
-    int *first = binaryNumber();
-    int *second = binaryNumber();
-
-    int *output = malloc(sizeof(int) * 8);
-    printf("NOR Logic gate works like this.\nTwo bits are added like OR and then NOT is applied.\n");
-    
-    for(i = 0; i < 8; i++)
-    {
-        *(output + i) = *(first + i) | *(second + i);
-        *(output + i) = (*(output + i) + 1) % 2;
-    }
-
-    printBinaryArray(output);
-}
-
-void NAND()
-{
-    int i;
-    int *first = binaryNumber();
-    int *second = binaryNumber();
-
-    int *output = malloc(sizeof(int) * 8);
-    printf("NAND Logic gate works like this.\nTwo bits are added like AND and then NOT is applied.\n");
-    
-    for(i = 0; i < 8; i++)
-    {
-        *(output + i) = *(first + i) & *(second + i);
-        *(output + i) = (*(output + i) + 1) % 2;
-    }
-
-    printBinaryArray(output);
-}
-
-void XOR()
-{
-    int i;
-    int *first = binaryNumber();
-    int *second = binaryNumber();
-
-    int *output = malloc(sizeof(int) * 8);
-    printf("XOR Logic gate works like this.\nTwo bits are added in a NAND gate AND in an OR gate.\nLook at it like this: Two same numbers are 0 and two different are 1.\n");
-
-    for(i = 0; i < 8; i++)
-    {
-        *(output + i) = *(first + i) ^ *(second + i);
-    }
-
-    printBinaryArray(output);
+    printf("The number is: %d\n", decimal);
 }
 
 int *binaryNumber()
 {
-    int i = 0;
-    int j = 7;
-    int *tempArray = malloc(sizeof(int) * 8);
-    do
-    {
-        printf("Enter the %d bit", ++j);
-        scanf("%d", (&tempArray + i));
-        i++; j--;
-    } while (i < 8);
+    int i;
+    int *array = malloc(sizeof(int) * SIZE);
 
-    return tempArray;   
+    for(i = 0; i < SIZE; i++)
+    {
+        printf("Enter [%d] bit: ", i + 1);
+        scanf("%d", &array[i]);
+        //TODO if statement for zeros and ones
+    }
+    printf("\n");
+
+    return array;
 }
 
-void printBinaryArray(int *array)
+int *NOT()
 {
-    if(array)
+    int i;
+    int *array = binaryNumber();
+
+    printf("-------------------------------\n");
+    printf("NOT Logic gate invers the bits.\n");
+    printf("1 is 0 and 0 is 1.\n");
+    printf("-------------------------------\n");
+
+    for(int i = 0; i < SIZE; i++)
     {
-        printf("\n");
-        for(int i = 0; i < 8; i++)
-        {
-            printf("%d", *(array + i));
-        }
-        printf("\n\n");    
+        array[i] = (array[i] + 1) % 2;
     }
-    else
-        printf("NULL\n");
+
+    printBinary(array);
+
+    return array;
+}
+
+int *OR()
+{
+    int i;
+    int *first = binaryNumber();
+    int *second = binaryNumber();
+    int *OR = malloc(sizeof(int) * SIZE);
+
+    printf("----------------------------------------------------------------------------\n");
+    printf("OR Logic gate compares two bits and if one of them is 1 the ouput will be 1.\n");
+    printf("0 output is only if both are 0.\n");
+    printf("----------------------------------------------------------------------------\n");
+
+    for(int i = 0; i < SIZE; i++)
+    {
+        if(first[i] == 1 || second[i] == 1)
+            *(OR + i) = 1;
+        else if(first[i] == 0 && second[i] == 0)
+            *(OR + i) = 0;
+    }
+
+    printBinary(first);
+    printBinary(second);
+    printf("--------OR\n");
+    printBinary(OR);
+
+    return OR;
+}
+
+void printBinary(int *array)
+{
+    int i = 0;
+    for(i = 0; i < SIZE; i++)
+    {
+        printf("%d", array[i]);
+    }
+    printf("\n");
 }
 
 void mainScreen()
 {
-    printf("~~~BINARY OPERATIONS PROGRAMS~~~\n");
+    printf("~~~BINARY GATES PROGRAM~~~\n");
     printf("Choose what you want to do\n");
     printf("1. Convert a number to binary.\n");
     printf("2. Convert a binary number to decimal\n");
@@ -234,16 +172,16 @@ void choose(int n)
             OR();
             break;
         case 5:
-            AND();
+            //AND
             break;
         case 6:
-            NOR();
+            //NOR
             break;
         case 7:
-            NAND();
+            //NAND
             break;
         case 8:
-            XOR();
+            //XOR
             break;
         case 9:
             exit(0);
