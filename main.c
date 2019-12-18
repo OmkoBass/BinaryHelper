@@ -9,6 +9,9 @@ void toBinary();
 void toDecimal();
 int *NOT();
 int *OR();
+int *AND();
+int *NOR();
+int *NAND();
 int *binaryNumber();
 void printBinary(int *array);
 
@@ -86,9 +89,9 @@ int *NOT()
     int i;
     int *array = binaryNumber();
 
-    printf("-------------------------------\n");
-    printf("NOT Logic gate invers the bits.\n");
-    printf("1 is 0 and 0 is 1.\n");
+    printf("-------------------------------\tX\tY\t\n");
+    printf("NOT Logic gate invers the bits.\t0\t1\n");
+    printf("1 is 0 and 0 is 1.\t\t1\t0\n");
     printf("-------------------------------\n");
 
     for(int i = 0; i < SIZE; i++)
@@ -108,10 +111,11 @@ int *OR()
     int *second = binaryNumber();
     int *OR = malloc(sizeof(int) * SIZE);
 
-    printf("----------------------------------------------------------------------------\n");
-    printf("OR Logic gate compares two bits and if one of them is 1 the ouput will be 1.\n");
-    printf("0 output is only if both are 0.\n");
-    printf("----------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
+    printf("OR Logic gate compares two bits and if one of them is 1 the ouput will be 1.\t0\t0\t0\n");
+    printf("Output 0 is only if both are 0.\t\t\t\t\t\t\t0\t1\t1\n");
+    printf("----------------------------------------------------------------------------\t1\t0\t1\n");
+    printf("\t\t\t\t\t\t\t\t\t\t1\t1\t1\n");
 
     for(int i = 0; i < SIZE; i++)
     {
@@ -127,6 +131,93 @@ int *OR()
     printBinary(OR);
 
     return OR;
+}
+
+int *AND()
+{
+    int i;
+    int *first = binaryNumber();
+    int *second = binaryNumber();
+    int *AND = malloc(sizeof(int) * SIZE);
+
+    printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
+    printf("OR Logic gate compares two bits and if one of them is 0 the ouput will be 0.\t0\t0\t0\n");
+    printf("Output 1 is only if both are 1.\t\t\t\t\t\t\t0\t1\t0\n");
+    printf("----------------------------------------------------------------------------\t1\t0\t0\n");
+    printf("\t\t\t\t\t\t\t\t\t\t1\t1\t1\n");
+
+    for(i = 0; i < SIZE; i++)
+    {
+        if(first[i] == 0 || second[i] == 0)
+            *(AND + i) = 0;
+        else if(first[i] == 1 && second[i] == 1)
+            *(AND + i) = 1;
+    }
+
+    printBinary(first);
+    printBinary(second);
+    printf("--------AND\n");
+    printBinary(AND);
+
+    return AND;
+}
+
+int *NOR()
+{
+    int i;
+    int *first = binaryNumber();
+    int *second = binaryNumber();
+    int *NOR = malloc(sizeof(int) * SIZE);
+
+    printf("---------------------------------------------------------\tX\tY\tZ\n");
+    printf("If you didn't do NOR, NAND and XOR go back to them.\t\t0\t0\t1\n");
+    printf("NOR Logic gate works like OR with NOT applied at the end.\t0\t1\t0\n");
+    printf("---------------------------------------------------------\t1\t0\t0\n");
+    printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
+
+    for(i = 0 ; i < SIZE; i++)
+    {
+        if(first[i] == 1 || second[i] == 1)
+            *(NOR + i) = (1 + 1) % 2;
+        else if(first[i] == 0 && second[i] == 0)
+            *(NOR + i) = (0 + 1) % 2;
+    }
+
+    printBinary(first);
+    printBinary(second);
+    printf("--------NOR\n");
+    printBinary(NOR);
+
+    return NOR;
+}
+
+int *NAND()
+{
+    int i;
+    int *first = binaryNumber();
+    int *second = binaryNumber();
+    int *NAND = malloc(sizeof(int) * SIZE);
+
+    printf("---------------------------------------------------------\tX\tY\tZ\n");
+    printf("If you didn't do NOR, NAND and XOR go back to them.\t\t0\t0\t1\n");
+    printf("NAND Logic gate works like AND with NOT applied at the end.\t0\t1\t1\n");
+    printf("---------------------------------------------------------\t1\t0\t1\n");
+    printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
+
+    for(i = 0 ; i < SIZE; i++)
+    {
+        if(first[i] == 0 || second[i] == 0)
+            *(NAND + i) = (0 + 1) % 2;
+        else if(first[i] == 1 && second[i] == 1)
+            *(NAND + i) = (1 + 1) % 2;
+    }
+
+    printBinary(first);
+    printBinary(second);
+    printf("--------NAND\n");
+    printBinary(NAND);
+
+    return NAND;
 }
 
 void printBinary(int *array)
@@ -172,13 +263,13 @@ void choose(int n)
             OR();
             break;
         case 5:
-            //AND
+            AND();
             break;
         case 6:
-            //NOR
+            NOR();
             break;
         case 7:
-            //NAND
+            NAND();
             break;
         case 8:
             //XOR
