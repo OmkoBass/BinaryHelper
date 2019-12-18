@@ -1,3 +1,3 @@
 # BinaryHelper
 
-Quick help on how to do and how binary opertions work.
+Someone needed help with how to do logic gates so i create this repo to explain and do basic logic gate operations.
