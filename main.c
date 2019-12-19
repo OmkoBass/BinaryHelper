@@ -264,8 +264,8 @@ int *XOR()
     }
     
     printf("---------------------------------------------------------\tX\tY\tZ\n");
-    printf("If you didn't do NOT, OR and AND go back to them.\t\t0\t0\t1\n");
-    printf("XOR Logic gate compares two bits, if they are the same then it's 0.\t0\t1\t1\n");
+    printf("If you didn't do NOT, OR and AND go back to them.\t\t0\t0\t0\n");
+    printf("XOR Logic gate if bits are the same it's 0. Not same is 1. \t0\t1\t1\n");
     printf("---------------------------------------------------------\t1\t0\t1\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
 
