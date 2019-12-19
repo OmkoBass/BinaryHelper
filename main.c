@@ -12,11 +12,13 @@ int *OR();
 int *AND();
 int *NOR();
 int *NAND();
+int *XOR();
 int *binaryNumber();
 void printBinary(int *array);
 
 void toBinary()
 {
+    system("cls");
     int i;
     int num;
     int *binary = malloc(sizeof(int) * SIZE);
@@ -43,10 +45,12 @@ void toBinary()
     }
 
     printf("The number is: "); printBinary(binary);
+    printf("\n");
 }
 
 void toDecimal()
 {
+    system("cls");
     int i;
     int decimal = 0;
     int *binary = binaryNumber();
@@ -66,28 +70,20 @@ void toDecimal()
     }
 
     printf("The number is: %d\n", decimal);
-}
-
-int *binaryNumber()
-{
-    int i;
-    int *array = malloc(sizeof(int) * SIZE);
-
-    for(i = 0; i < SIZE; i++)
-    {
-        printf("Enter [%d] bit: ", i + 1);
-        scanf("%d", &array[i]);
-        //TODO if statement for zeros and ones
-    }
     printf("\n");
-
-    return array;
 }
 
 int *NOT()
 {
     int i;
     int *array = binaryNumber();
+
+    if(!array)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
 
     printf("-------------------------------\tX\tY\t\n");
     printf("NOT Logic gate invers the bits.\t0\t1\n");
@@ -100,6 +96,7 @@ int *NOT()
     }
 
     printBinary(array);
+    printf("\n");
 
     return array;
 }
@@ -110,6 +107,13 @@ int *OR()
     int *first = binaryNumber();
     int *second = binaryNumber();
     int *OR = malloc(sizeof(int) * SIZE);
+
+    if(!first || !second)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
 
     printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
     printf("OR Logic gate compares two bits and if one of them is 1 the ouput will be 1.\t0\t0\t0\n");
@@ -129,6 +133,7 @@ int *OR()
     printBinary(second);
     printf("--------OR\n");
     printBinary(OR);
+    printf("\n");
 
     return OR;
 }
@@ -139,6 +144,13 @@ int *AND()
     int *first = binaryNumber();
     int *second = binaryNumber();
     int *AND = malloc(sizeof(int) * SIZE);
+
+    if(!first || !second)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
 
     printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
     printf("OR Logic gate compares two bits and if one of them is 0 the ouput will be 0.\t0\t0\t0\n");
@@ -158,6 +170,7 @@ int *AND()
     printBinary(second);
     printf("--------AND\n");
     printBinary(AND);
+    printf("\n");
 
     return AND;
 }
@@ -169,8 +182,15 @@ int *NOR()
     int *second = binaryNumber();
     int *NOR = malloc(sizeof(int) * SIZE);
 
+    if(!first || !second)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
+
     printf("---------------------------------------------------------\tX\tY\tZ\n");
-    printf("If you didn't do NOR, NAND and XOR go back to them.\t\t0\t0\t1\n");
+    printf("If you didn't do NOT, OR and AND go back to them.\t\t0\t0\t1\n");
     printf("NOR Logic gate works like OR with NOT applied at the end.\t0\t1\t0\n");
     printf("---------------------------------------------------------\t1\t0\t0\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
@@ -187,6 +207,7 @@ int *NOR()
     printBinary(second);
     printf("--------NOR\n");
     printBinary(NOR);
+    printf("\n");
 
     return NOR;
 }
@@ -198,8 +219,15 @@ int *NAND()
     int *second = binaryNumber();
     int *NAND = malloc(sizeof(int) * SIZE);
 
+    if(!first || !second)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
+
     printf("---------------------------------------------------------\tX\tY\tZ\n");
-    printf("If you didn't do NOR, NAND and XOR go back to them.\t\t0\t0\t1\n");
+    printf("If you didn't do NOT, OR and AND go back to them.\t\t0\t0\t1\n");
     printf("NAND Logic gate works like AND with NOT applied at the end.\t0\t1\t1\n");
     printf("---------------------------------------------------------\t1\t0\t1\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
@@ -216,8 +244,67 @@ int *NAND()
     printBinary(second);
     printf("--------NAND\n");
     printBinary(NAND);
+    printf("\n");
 
     return NAND;
+}
+
+int *XOR()
+{
+    int i;
+    int *first = binaryNumber();
+    int *second = binaryNumber();
+    int *XOR = malloc(sizeof(int) * SIZE);
+
+    if(!first || !second)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
+    
+    printf("---------------------------------------------------------\tX\tY\tZ\n");
+    printf("If you didn't do NOT, OR and AND go back to them.\t\t0\t0\t1\n");
+    printf("XOR Logic gate compares two bits, if they are the same then it's 0.\t0\t1\t1\n");
+    printf("---------------------------------------------------------\t1\t0\t1\n");
+    printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
+
+    for(i = 0; i < SIZE; i++)
+    {
+        if(first[i] == second[i])
+            XOR[i] = 0;
+        else
+            XOR[i] = 1;
+    }
+
+    printBinary(first);
+    printBinary(second);
+    printf("--------XOR\n");
+    printBinary(XOR);
+    printf("\n");
+
+    return XOR;
+}
+
+int *binaryNumber()
+{
+    system("cls");
+    int i;
+    int *array = malloc(sizeof(int) * SIZE);
+
+    for(i = 0; i < SIZE; i++)
+    {
+        printf("Enter [%d] bit: ", i + 1);
+        scanf("%d", &array[i]);
+        if(*(array + i) != 0)
+            if(*(array + i) != 1)
+                return NULL;
+    }
+    printf("\n");
+
+    system("cls");
+
+    return array;
 }
 
 void printBinary(int *array)
@@ -272,7 +359,7 @@ void choose(int n)
             NAND();
             break;
         case 8:
-            //XOR
+            XOR();
             break;
         case 9:
             exit(0);
