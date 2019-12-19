@@ -153,7 +153,7 @@ int *AND()
     }
 
     printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
-    printf("OR Logic gate compares two bits and if one of them is 0 the ouput will be 0.\t0\t0\t0\n");
+    printf("AND Logic gate compares two bits and if one of them is 0 the ouput will be 0.\t0\t0\t0\n");
     printf("Output 1 is only if both are 1.\t\t\t\t\t\t\t0\t1\t0\n");
     printf("----------------------------------------------------------------------------\t1\t0\t0\n");
     printf("\t\t\t\t\t\t\t\t\t\t1\t1\t1\n");
