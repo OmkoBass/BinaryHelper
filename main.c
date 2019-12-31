@@ -13,6 +13,8 @@ int *AND();
 int *NOR();
 int *NAND();
 int *XOR();
+int *FirstComplement();
+int *SecondComplement();
 int *binaryNumber();
 void printBinary(int *array);
 
@@ -286,6 +288,58 @@ int *XOR()
     return XOR;
 }
 
+int *FirstComplement()
+{
+    int i;
+    int *first = binaryNumber();
+
+    if(!first)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
+
+    printf("First complement adds 1 at the beggining of our binary number.\n");
+
+    for(i = 0; i < SIZE; i++)
+    {
+        if(i == 7)
+            if(first[i] == 1)
+                first[i] = 0;
+            else
+                first[i] = 1;
+    }
+
+    printBinary(first);
+    printf("\n");
+
+    return first;
+}
+
+int *SecondComplement()
+{
+    int i;
+    int *first = binaryNumber();
+
+    if(!first)
+    {
+        printf("You messed up. . .\n");
+        system("cls");
+        return NULL;
+    }
+
+    printf("Second complement inverts the binary number(NOT) then adds 1 at the beggining.\n");
+
+    //TODO: first = NOT(first);
+    //TODO: first = FirstComplement(first)
+
+    printBinary(first);
+    printf("\n");
+
+    return first;
+}
+
 int *binaryNumber()
 {
     system("cls");
@@ -329,7 +383,9 @@ void mainScreen()
     printf("6. Logical NOR on two binary numbers.\n");
     printf("7. Logical NAND on two binary numbers.\n");
     printf("8. Logical XOR on two binary numbers.\n");
-    printf("9. Exit.\n");
+    printf("9. First Complement.\n");
+    printf("10. Second Complement.\n");
+    printf("11. Exit.\n");
     printf("Explenations will be given on how this works when it's executed.\n");
 }
 
@@ -362,6 +418,10 @@ void choose(int n)
             XOR();
             break;
         case 9:
+            FirstComplement();
+        case 10:
+            SecondComplement();
+        case 11:
             exit(0);
         default:
             printf("Bad input. Choose again. . .\n");
