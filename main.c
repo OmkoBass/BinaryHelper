@@ -7,16 +7,141 @@ void printMainScreen();
 void choose(int n);
 void toBinary();
 void toDecimal();
-int *NOT();
-int *OR();
-int *AND();
-int *NOR();
-int *NAND();
-int *XOR();
-int *FirstComplement();
-int *SecondComplement();
-int *binaryNumber();
+void NOT();
+void OR();
+void AND();
+void NOR();
+void NAND();
+void XOR();
+void FirstComplement();
+void SecondComplement();
 void printBinary(int *array);
+
+//Functions that with arguments that do the wanted operation and return
+
+int *NOTreturn(int *array)
+{
+    int i;
+    
+    for(i = 0; i < SIZE; i++)
+        array[i] = (array[i] + 1) % 2;
+    
+    return array;
+}
+
+int *ORreturn(int *first, int *second)
+{
+    int i;
+    int *OR = malloc(sizeof(int) * SIZE);
+
+    for(int i = 0; i < SIZE; i++)
+    {
+        if(first[i] == 0 && second[i] == 0)
+            OR[i] = 0;
+        else
+            OR[i] = 1;
+    }
+
+    return OR;
+}
+
+int *ANDreturn(int *first, int *second)
+{
+    int i;
+    int *AND = malloc(sizeof(int) * SIZE);
+
+    for(int i = 0; i < SIZE; i++)
+    {
+        if(first[i] == 1 && second[i] == 1)
+            AND[i] = 1;
+        else
+            AND[i] = 0;
+    }
+
+    return AND;
+}
+
+int *NORreturn(int *first, int *second)
+{
+    int i;
+    int *NOR = malloc(sizeof(int) * SIZE);
+
+    for(i = 0 ; i < SIZE; i++)
+    {
+        NOR = ORreturn(first, second);
+        NOR = NOTreturn(NOR);
+    }
+
+    return NOR;
+}
+
+int *NANDreturn(int *first, int *second)
+{
+    int i;
+    int *NAND = malloc(sizeof(int) * SIZE);
+
+    for(i = 0; i < SIZE; i++)
+    {
+        NAND = ANDreturn(first, second);
+        NAND = NOTreturn(NAND);
+    }
+
+    return NAND;
+}
+
+int *XORreturn(int *first, int *second)
+{
+    int i;
+    int *XOR = malloc(sizeof(int) * SIZE);
+
+    //Could implement it with gates but it's faster like this
+    for(i = 0; i < SIZE; i++)
+    {
+        if(first[i] == second[i])
+            XOR[i] = 0;
+        else
+            XOR[i] = 1;
+    }
+
+    return XOR;
+}
+
+int *OnesComplementreturn(int *first)
+{
+    first = NOTreturn(first);
+
+    return first;
+}
+
+int *TwosComplementreturn(int *first)
+{
+    first = NOTreturn(first);
+
+    first[7] = (first[7] + 1) % 2;
+
+    return first;
+}
+
+int *binaryNumber()
+{
+    system("cls");
+    int i;
+    int *array = malloc(sizeof(int) * SIZE);
+
+    for(i = 0; i < SIZE; i++)
+    {
+        printf("Enter [%d] bit: ", i + 1);
+        scanf("%d", &array[i]);
+        if(*(array + i) != 0)
+            if(*(array + i) != 1)
+                return NULL;
+    }
+    printf("\n");
+
+    system("cls");
+
+    return array;
+}
 
 void toBinary()
 {
@@ -75,16 +200,16 @@ void toDecimal()
     printf("\n");
 }
 
-int *NOT()
+void NOT()
 {
     int i;
     int *array = binaryNumber();
 
     if(!array)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
     printf("-------------------------------\tX\tY\t\n");
@@ -92,18 +217,13 @@ int *NOT()
     printf("1 is 0 and 0 is 1.\t\t1\t0\n");
     printf("-------------------------------\n");
 
-    for(int i = 0; i < SIZE; i++)
-    {
-        array[i] = (array[i] + 1) % 2;
-    }
+    array = NOTreturn(array);
 
     printBinary(array);
     printf("\n");
-
-    return array;
 }
 
-int *OR()
+void OR()
 {
     int i;
     int *first = binaryNumber();
@@ -114,7 +234,7 @@ int *OR()
     {
         printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        return;
     }
 
     printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
@@ -123,24 +243,16 @@ int *OR()
     printf("----------------------------------------------------------------------------\t1\t0\t1\n");
     printf("\t\t\t\t\t\t\t\t\t\t1\t1\t1\n");
 
-    for(int i = 0; i < SIZE; i++)
-    {
-        if(first[i] == 1 || second[i] == 1)
-            *(OR + i) = 1;
-        else if(first[i] == 0 && second[i] == 0)
-            *(OR + i) = 0;
-    }
+    OR = ORreturn(first, second);
 
     printBinary(first);
     printBinary(second);
     printf("--------OR\n");
     printBinary(OR);
     printf("\n");
-
-    return OR;
 }
 
-int *AND()
+void AND()
 {
     int i;
     int *first = binaryNumber();
@@ -149,9 +261,9 @@ int *AND()
 
     if(!first || !second)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
     printf("----------------------------------------------------------------------------\tX\tY\tZ\n");
@@ -160,24 +272,16 @@ int *AND()
     printf("----------------------------------------------------------------------------\t1\t0\t0\n");
     printf("\t\t\t\t\t\t\t\t\t\t1\t1\t1\n");
 
-    for(i = 0; i < SIZE; i++)
-    {
-        if(first[i] == 0 || second[i] == 0)
-            *(AND + i) = 0;
-        else if(first[i] == 1 && second[i] == 1)
-            *(AND + i) = 1;
-    }
+    AND = ANDreturn(first, second);
 
     printBinary(first);
     printBinary(second);
     printf("--------AND\n");
     printBinary(AND);
     printf("\n");
-
-    return AND;
 }
 
-int *NOR()
+void NOR()
 {
     int i;
     int *first = binaryNumber();
@@ -186,9 +290,9 @@ int *NOR()
 
     if(!first || !second)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
     printf("---------------------------------------------------------\tX\tY\tZ\n");
@@ -197,24 +301,16 @@ int *NOR()
     printf("---------------------------------------------------------\t1\t0\t0\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
 
-    for(i = 0 ; i < SIZE; i++)
-    {
-        if(first[i] == 1 || second[i] == 1)
-            *(NOR + i) = (1 + 1) % 2;
-        else if(first[i] == 0 && second[i] == 0)
-            *(NOR + i) = (0 + 1) % 2;
-    }
+    NOR = NORreturn(first, second);
 
     printBinary(first);
     printBinary(second);
     printf("--------NOR\n");
     printBinary(NOR);
     printf("\n");
-
-    return NOR;
 }
 
-int *NAND()
+void NAND()
 {
     int i;
     int *first = binaryNumber();
@@ -223,9 +319,9 @@ int *NAND()
 
     if(!first || !second)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
     printf("---------------------------------------------------------\tX\tY\tZ\n");
@@ -234,24 +330,16 @@ int *NAND()
     printf("---------------------------------------------------------\t1\t0\t1\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
 
-    for(i = 0 ; i < SIZE; i++)
-    {
-        if(first[i] == 0 || second[i] == 0)
-            *(NAND + i) = (0 + 1) % 2;
-        else if(first[i] == 1 && second[i] == 1)
-            *(NAND + i) = (1 + 1) % 2;
-    }
+    NAND = NANDreturn(first, second);
 
     printBinary(first);
     printBinary(second);
     printf("--------NAND\n");
     printBinary(NAND);
     printf("\n");
-
-    return NAND;
 }
 
-int *XOR()
+void XOR()
 {
     int i;
     int *first = binaryNumber();
@@ -260,9 +348,9 @@ int *XOR()
 
     if(!first || !second)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
     
     printf("---------------------------------------------------------\tX\tY\tZ\n");
@@ -271,94 +359,53 @@ int *XOR()
     printf("---------------------------------------------------------\t1\t0\t1\n");
     printf("\t\t\t\t\t\t\t\t1\t1\t0\n");
 
-    for(i = 0; i < SIZE; i++)
-    {
-        if(first[i] == second[i])
-            XOR[i] = 0;
-        else
-            XOR[i] = 1;
-    }
+    XOR = XORreturn(first, second);
 
     printBinary(first);
     printBinary(second);
     printf("--------XOR\n");
     printBinary(XOR);
     printf("\n");
-
-    return XOR;
 }
 
-int *FirstComplement()
+void OnesComplement()
 {
     int i;
     int *first = binaryNumber();
 
     if(!first)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
     printf("First complement adds 1 at the beggining of our binary number.\n");
 
-    for(i = 0; i < SIZE; i++)
-    {
-        if(i == 7)
-            if(first[i] == 1)
-                first[i] = 0;
-            else
-                first[i] = 1;
-    }
+    first = NOTreturn(first);
 
     printBinary(first);
     printf("\n");
-
-    return first;
 }
 
-int *SecondComplement()
+void TwosComplement()
 {
     int i;
     int *first = binaryNumber();
 
     if(!first)
     {
-        printf("You messed up. . .\n");
         system("cls");
-        return NULL;
+        printf("You messed up. . .\n");
+        return;
     }
 
-    printf("Second complement inverts the binary number(NOT) then adds 1 at the beggining.\n");
+    printf("Twos complement does the first complement then adds 1 at the beggining.\n");
 
-    //TODO: first = NOT(first);
-    //TODO: first = FirstComplement(first)
+    first = TwosComplementreturn(first);
 
     printBinary(first);
     printf("\n");
-
-    return first;
-}
-
-int *binaryNumber()
-{
-    system("cls");
-    int i;
-    int *array = malloc(sizeof(int) * SIZE);
-
-    for(i = 0; i < SIZE; i++)
-    {
-        printf("Enter [%d] bit: ", i + 1);
-        scanf("%d", &array[i]);
-        if(*(array + i) != 0)
-            if(*(array + i) != 1)
-                return NULL;
-    }
-    printf("\n");
-
-    system("cls");
-
-    return array;
 }
 
 void printBinary(int *array)
@@ -383,8 +430,8 @@ void mainScreen()
     printf("6. Logical NOR on two binary numbers.\n");
     printf("7. Logical NAND on two binary numbers.\n");
     printf("8. Logical XOR on two binary numbers.\n");
-    printf("9. First Complement.\n");
-    printf("10. Second Complement.\n");
+    printf("9. Ones' Complement.\n");
+    printf("10. Two's Complement.\n");
     printf("11. Exit.\n");
     printf("Explenations will be given on how this works when it's executed.\n");
 }
@@ -418,9 +465,11 @@ void choose(int n)
             XOR();
             break;
         case 9:
-            FirstComplement();
+            OnesComplement();
+            break;
         case 10:
-            SecondComplement();
+            TwosComplement();
+            break;
         case 11:
             exit(0);
         default:
