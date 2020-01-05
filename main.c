@@ -425,7 +425,7 @@ void printBinary(int *array)
 
 void mainScreen()
 {
-    printf("~~~BINARY GATES PROGRAM~~~\n");
+    printf("~~~BINARY HELPER~~~\n");
     printf("Choose what you want to do\n");
     printf("1. Convert a number to binary.\n");
     printf("2. Convert a binary number to decimal\n");
@@ -443,10 +443,10 @@ void mainScreen()
 
 void choose(int n)
 {
-    int i;
-    for(i = 0; i < COMMANDS; i++)
-        if(i == n)
-            (*which[n - 1])();
+    if (n >= 0 && n <= COMMANDS)
+        (which[n - 1])();
+    else
+        return;
 }
 
 int main()
