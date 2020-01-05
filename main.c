@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #define SIZE 8
+#define COMMANDS 11
 
 void printMainScreen();
 void choose(int n);
