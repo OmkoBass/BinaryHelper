@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #define SIZE 8
-#define COMMANDS 11
+#define COMMANDS 12
 
 void printMainScreen();
 void choose(int n);
@@ -14,9 +14,12 @@ void AND();
 void NOR();
 void NAND();
 void XOR();
-void FirstComplement();
-void SecondComplement();
+void OnesComplement();
+void TwosComplement();
 void printBinary(int *array);
+void out();
+
+void (*which[COMMANDS])() = {toBinary, toDecimal, NOT, OR, AND, NOR, NAND, XOR, OnesComplement, TwosComplement, out};
 
 //Functions that with arguments that do the wanted operation and return
 
@@ -178,7 +181,6 @@ void toBinary()
 
 void toDecimal()
 {
-    system("cls");
     int i;
     int decimal = 0;
     int *binary = binaryNumber();
@@ -409,6 +411,8 @@ void TwosComplement()
     printf("\n");
 }
 
+void out() { exit(0); }
+
 void printBinary(int *array)
 {
     int i = 0;
@@ -439,44 +443,10 @@ void mainScreen()
 
 void choose(int n)
 {
-    switch(n)
-    {
-        case 1:
-            toBinary();
-            break;
-        case 2:
-            toDecimal();
-            break;
-        case 3:
-            NOT();
-            break;
-        case 4:
-            OR();
-            break;
-        case 5:
-            AND();
-            break;
-        case 6:
-            NOR();
-            break;
-        case 7:
-            NAND();
-            break;
-        case 8:
-            XOR();
-            break;
-        case 9:
-            OnesComplement();
-            break;
-        case 10:
-            TwosComplement();
-            break;
-        case 11:
-            exit(0);
-        default:
-            printf("Bad input. Choose again. . .\n");
-            break;
-    }
+    int i;
+    for(i = 0; i < COMMANDS; i++)
+        if(i == n)
+            (*which[n - 1])();
 }
 
 int main()
