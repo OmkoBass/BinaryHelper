@@ -98,7 +98,6 @@ int *XORreturn(int *first, int *second)
     int i;
     int *XOR = malloc(sizeof(int) * SIZE);
 
-    //Could implement it with gates but it's faster like this
     for(i = 0; i < SIZE; i++)
     {
         if(first[i] == second[i])
